@@ -161,7 +161,6 @@ class UCF11(chainer.dataset.DatasetMixin):
                 mask=None,
                 mask_value=0
             )
-
         if len(base) < self.frames:
             raise "{} does not have {} frames.".format(image_dir, self.frames)
         if self.mean is None:

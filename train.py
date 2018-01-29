@@ -24,27 +24,27 @@ def main():
         'momentum_sgd': chainer.optimizers.MomentumSGD
     }
     parser = argparse.ArgumentParser(description='Chainer ConvolutionND example:')
-    parser.add_argument('--batchsize', '-b', type=int, default=64,
+    parser.add_argument('--batchsize', '-b', type=int, default=10,
                         help='Number of images in each mini-batch')
     parser.add_argument('--learnrate', '-l', type=float, default=0.05,
                         help='Learning rate for SGD')
     parser.add_argument('--epoch', '-e', type=int, default=300,
                         help='Number of sweeps over the dataset to train')
-    parser.add_argument('--gpu', '-g', type=int, default=0,
+    parser.add_argument('--gpu', '-g', type=int, default=-1,
                         help='GPU ID (negative value indicates CPU)')
     parser.add_argument('--out', '-o', default='result',
                         help='Directory to output the result')
     parser.add_argument('--resume', '-r', default='',
                         help='Resume the training from snapshot')
-    parser.add_argument('--arch', '-a', choices=archs.keys(), default='vgg3d',
+    parser.add_argument('--arch', '-a', choices=archs.keys(), default='c3d',
                         help='Architecture')
-    parser.add_argument('--optimizer', '-z', choices=optimizers.keys(), default='momentum_sgd',
+    parser.add_argument('--optimizer', '-z', choices=optimizers.keys(), default='sgd',
                         help='Optimizer')
-    parser.add_argument('--train-data', '-i', default='images',
+    parser.add_argument('--train-data', '-i', default='ucf11_160x120/images/',
                         help='Directory of training data')
-    parser.add_argument('--test-data', '-t', default='tests',
+    parser.add_argument('--test-data', '-t', default='ucf11_160x120/tests/',
                         help='Directory of test data')
-    parser.add_argument('--mean', '-m', default=None,
+    parser.add_argument('--mean', '-m', default='ucf11_112px/mean.npy',
                         help='Mean file (computed by compute_mean.py)')
     parser.add_argument('--frames', '-f', type=int, default=6,
                         help='frames for convlution')
