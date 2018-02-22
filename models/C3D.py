@@ -41,7 +41,7 @@ class C3D(chainer.Chain):
 
     """
 
-    def __init__(self, class_labels=11):
+    def __init__(self, class_labels=12):
         super(C3D, self).__init__()
         with self.init_scope():
             self.conv1a = Block3D(3, 64, 3)
@@ -77,5 +77,5 @@ class C3D(chainer.Chain):
         h = F.relu(h)
         h = F.dropout(h, ratio=0.5)
         h = self.fc8(h)
-        return h
-        #return F.softmax(h)
+        # return h
+        return F.softmax(h)
