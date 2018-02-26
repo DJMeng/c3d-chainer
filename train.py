@@ -47,7 +47,7 @@ def main():
 	                    help='Directory of test data')
 	parser.add_argument('--mean', '-m', default='holly_112px/mean.npy',
 	                    help='Mean file (computed by compute_mean.py)')
-	parser.add_argument('--frames', '-f', type=int, default=24,
+	parser.add_argument('--frames', '-f', type=int, default=16,
 	                    help='frames for convlution')
 	parser.add_argument('--no-random', action='store_true',
 	                    help='Disable data augmentation')
