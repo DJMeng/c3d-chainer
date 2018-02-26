@@ -14,6 +14,9 @@ from mullabel_classifier import Mullabel_Classifier
 from datasets.UCF11 import UCF11
 from datasets.Hollywood2 import Hollywood
 
+import matplotlib
+matplotlib.use('Agg')
+
 
 def main():
 	archs = {
@@ -22,7 +25,8 @@ def main():
 	}
 	optimizers = {
 		'sgd': chainer.optimizers.SGD,
-		'momentum_sgd': chainer.optimizers.MomentumSGD
+		'momentum_sgd': chainer.optimizers.MomentumSGD,
+		'adam': chainer.optimizers.adam
 	}
 	parser = argparse.ArgumentParser(description='Chainer ConvolutionND example:')
 	parser.add_argument('--batchsize', '-b', type=int, default=10,
@@ -39,7 +43,7 @@ def main():
 	                    help='Resume the training from snapshot')
 	parser.add_argument('--arch', '-a', choices=archs.keys(), default='c3d',
 	                    help='Architecture')
-	parser.add_argument('--optimizer', '-z', choices=optimizers.keys(), default='sgd',
+	parser.add_argument('--optimizer', '-z', choices=optimizers.keys(), default='adam',
 	                    help='Optimizer')
 	parser.add_argument('--train-data', '-i', default='holly_160x120/images/',
 	                    help='Directory of training data')
@@ -47,7 +51,7 @@ def main():
 	                    help='Directory of test data')
 	parser.add_argument('--mean', '-m', default='holly_112px/mean.npy',
 	                    help='Mean file (computed by compute_mean.py)')
-	parser.add_argument('--frames', '-f', type=int, default=6,
+	parser.add_argument('--frames', '-f', type=int, default=30,
 	                    help='frames for convlution')
 	parser.add_argument('--no-random', action='store_true',
 	                    help='Disable data augmentation')
@@ -114,6 +118,10 @@ def main():
 	trainer.extend(extensions.PrintReport(
 		['epoch', 'main/loss', 'validation/main/loss',
 		 'main/accuracy', 'validation/main/accuracy', 'elapsed_time']))
+	
+	trainer.extend(
+		extensions.PlotReport(['main/loss', 'validation/main/loss'],
+		                      'epoch', file_name='loss.png'))
 	
 	# Print a progress bar to stdout
 	trainer.extend(extensions.ProgressBar())

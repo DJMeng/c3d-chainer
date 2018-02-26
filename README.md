@@ -98,33 +98,33 @@ $ ls videos/*.mpg | parallel --no-notice -j8 ./tools/video_to_image.sh  {}
 Make folders for resized and cropped images.
 
 ```
-$ ls videos/*/*.jpg | parallel --no-notice -j 200 'echo `dirname {}`' | uniq > dirs
-$ cat dirs | sed 's/videos/ucf11_160x120\/images/' | xargs  mkdir -p
-$ cat dirs | sed 's/videos/ucf11_112px\/images/' | xargs  mkdir -p
+$ find ./videos/* -name "*.jpg" | parallel --no-notice -j 200 'echo `dirname {}`' | uniq > dirs
+$ cat dirs | sed 's/videos/hollywood2_160x120\/images/' | xargs  mkdir -p
+$ cat dirs | sed 's/videos/hollywood2_112px\/images/' | xargs  mkdir -p
 $ rm dirs
 ```
 
 Resize to 160x120 (half).
 
 ```
-$ ls videos/*/*.jpg | parallel -j20 'convert -resize 160X120! {} `echo {} | sed "s/videos/ucf11_160x120\/images/"`'
+$ find ./videos/* -name "*.jpg"  | parallel -j20 'convert -resize 160X120! {} `echo {} | sed "s/videos/hollywood2_160x120\/images/"`'
 ```
 
 Resize and crop to 112x112 (to compute mean image).
 
 ```
-$ ls videos/*/*.jpg | parallel -j20 'python tools/resize.py -c 112 -i {} -o `echo {} | sed "s/videos/ucf11_112px\/images/"`'
+$ find ./videos/* -name "*.jpg" | parallel -j20 'python tools/resize.py -c 112 -i {} -o `echo {} | sed "s/videos/hollywood2_112px\/images/"`'
 ```
 
 Now, you have two datasets.
 
-* ./ucf11_160x120/images: for training
-* ./ucf11_112px/images: for comuputing mean image
+* ./hollywood2_160x120/images: for training
+* ./hollywood2_112px/images: for comuputing mean image
 
 Compute mean image for ucf11_112px.
 
-```
-$ pushd ucf11_112px
+```bash
+$ pushd hollywood2_112px
 $   find . | grep .jpg$ > list
 $   python ../tools/compute_mean.py --root . list
 $ popd
@@ -132,20 +132,20 @@ $ popd
 
 Some videos have very small number of frames. These videos cannot use for training/testing.
 The following command counts number of files for each video.
-Please find videos which have images less than 10, and remove the folders.
+Please find videos which have images less than 30, and remove the folders.
 
-```
-$ pushd ucf11_160x120/images/
+```bash
+$ pushd hollywood2_160x120/images/
 $   ls | parallel -j50 'echo `ls -1 {} | wc -l` {}' | sort -n > ../counts
 $   mkdir ../ignored
-$   grep '^[0-9] ' ../counts | cut -d ' ' -f 2 | xargs  -I '{}' mv {} ../ignored
+$   grep '^[0-29] ' ../counts | cut -d ' ' -f 2 | xargs  -I '{}' mv {} ../ignored
 $ popd
 ```
 
 Split test dataset. Choise 300 images randomly.
 
 ```
-$ pushd ucf11_160x120/images
+$ pushd hollywood2_112px/images
 $   mkdir ../tests
 $   ls | shuf | head -n 300 | xargs -I '{}' mv {} ../tests/
 $ popd
@@ -153,11 +153,11 @@ $ popd
 
 Now, you have..
 
-* ./ucf11_160x120/images: for training
-* ./ucf11_160x120/tests: for validaton
-* ./ucf11_160x120/ignored: Small number of frames. Not using.
-* ./ucf11_112px/images: for comuputing mean image
-* ./ucf11_112px/mean.npy: mean image array
+* ./hollywood2_160x120/images: for training
+* ./hollywood2_160x120/tests: for validaton
+* ./hollywood2_160x120/ignored: Small number of frames. Not using.
+* ./hollywood2_112px/images: for comuputing mean image
+* ./hollywood2_112px/mean.npy: mean image array
 
 
 ## Training

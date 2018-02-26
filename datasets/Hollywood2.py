@@ -97,6 +97,7 @@ class Hollywood(chainer.dataset.DatasetMixin):
 
     def get_label_idx(self, path):
         img_dir = os.path.split(path)[-1]
+        p = self.data_dic[img_dir]
         return self.data_dic[img_dir]
     
     def __len__(self):
