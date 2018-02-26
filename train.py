@@ -14,9 +14,6 @@ from mullabel_classifier import Mullabel_Classifier
 from datasets.UCF11 import UCF11
 from datasets.Hollywood2 import Hollywood
 
-import matplotlib
-matplotlib.use('Agg')
-
 
 def main():
 	archs = {
@@ -25,11 +22,10 @@ def main():
 	}
 	optimizers = {
 		'sgd': chainer.optimizers.SGD,
-		'momentum_sgd': chainer.optimizers.MomentumSGD,
-		'adam': chainer.optimizers.adam
+		'momentum_sgd': chainer.optimizers.MomentumSGD
 	}
 	parser = argparse.ArgumentParser(description='Chainer ConvolutionND example:')
-	parser.add_argument('--batchsize', '-b', type=int, default=10,
+	parser.add_argument('--batchsize', '-b', type=int, default=32,
 	                    help='Number of images in each mini-batch')
 	parser.add_argument('--learnrate', '-l', type=float, default=0.05,
 	                    help='Learning rate for SGD')
@@ -43,7 +39,7 @@ def main():
 	                    help='Resume the training from snapshot')
 	parser.add_argument('--arch', '-a', choices=archs.keys(), default='c3d',
 	                    help='Architecture')
-	parser.add_argument('--optimizer', '-z', choices=optimizers.keys(), default='adam',
+	parser.add_argument('--optimizer', '-z', choices=optimizers.keys(), default='momentum_sgd',
 	                    help='Optimizer')
 	parser.add_argument('--train-data', '-i', default='holly_160x120/images/',
 	                    help='Directory of training data')
@@ -51,7 +47,7 @@ def main():
 	                    help='Directory of test data')
 	parser.add_argument('--mean', '-m', default='holly_112px/mean.npy',
 	                    help='Mean file (computed by compute_mean.py)')
-	parser.add_argument('--frames', '-f', type=int, default=30,
+	parser.add_argument('--frames', '-f', type=int, default=24,
 	                    help='frames for convlution')
 	parser.add_argument('--no-random', action='store_true',
 	                    help='Disable data augmentation')
