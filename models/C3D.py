@@ -81,5 +81,6 @@ class C3D(chainer.Chain):
         h = F.relu(h)
         h = F.dropout(h, ratio=0.5)
         h = self.fc8(h)
-        # return h
-        return F.softmax(h)
+        return h
+        # return F.softmax(h)
+
