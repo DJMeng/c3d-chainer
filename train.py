@@ -31,6 +31,8 @@ def main():
 	                    help='Learning rate for SGD')
 	parser.add_argument('--epoch', '-e', type=int, default=300,
 	                    help='Number of sweeps over the dataset to train')
+	parser.add_argument('--frequence', '-fq', type=int, default=1,
+	                    help='Frequence to take snapshot')
 	parser.add_argument('--gpu', '-g', type=int, default=-1,
 	                    help='GPU ID (negative value indicates CPU)')
 	parser.add_argument('--out', '-o', default='result',
@@ -100,9 +102,11 @@ def main():
 	# The "main" refers to the target link of the "main" optimizer.
 	trainer.extend(extensions.dump_graph('main/loss'))
 	
-	# Take a snapshot at each epoch
-	trainer.extend(extensions.snapshot(), trigger=(args.epoch, 'epoch'))
-	
+	# Take a snapshot
+	trainer.extend(extensions.snapshot(filename='model_epoch-{.updater.epoch}'), trigger=(args.frequence, 'epoch'))
+	trainer.extend(extensions.snapshot_object(model.predictor, filename='predictor_epoch-{.updater.epoch}'),
+	               trigger=(args.frequence, 'epoch'))
+
 	# Write a log of evaluation statistics for each epoch
 	trainer.extend(extensions.LogReport())
 	
