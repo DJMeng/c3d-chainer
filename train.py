@@ -123,6 +123,10 @@ def main():
 		extensions.PlotReport(['main/loss', 'validation/main/loss'],
 		                      'epoch', file_name='loss.png'))
 	
+	trainer.extend(
+		extensions.PlotReport(['main/accuracy'],
+		                      'epoch', file_name='accuracy.png'))
+	
 	# Print a progress bar to stdout
 	trainer.extend(extensions.ProgressBar())
 	

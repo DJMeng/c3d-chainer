@@ -83,4 +83,5 @@ class C3D(chainer.Chain):
         h = self.fc8(h)
         return h
         # return F.softmax(h)
+        # return F.sigmoid(h)
 

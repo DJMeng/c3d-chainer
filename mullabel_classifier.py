@@ -11,6 +11,7 @@ class Mullabel_Classifier(L.Classifier):
 		
 	@staticmethod
 	def accuracy_mullable(x, t):
+		x = F.sigmoid(x)
 		x = [list(map(lambda n: 0 if n < 0.5 else 1, l)) for l in x.data]
 		size = len(t)
 		acc = 0.0
