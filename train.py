@@ -63,7 +63,7 @@ def main():
 	# Set up a neural network to train.
 	# Classifier reports softmax cross entropy loss and accuracy at every
 	# iteration, which will be used by the PrintReport extension below.
-	print('Using UCF11 dataset.')
+	print('Using Hollywood2 dataset.')
 	print('Using {} model.'.format(args.arch))
 	print('Disable data augmentation' if args.no_random else 'Enable data augmentation')
 	mean = np.load(args.mean) if os.path.isfile(args.mean if args.mean else "") else None
@@ -73,8 +73,8 @@ def main():
 	train = Hollywood(args.train_data, mean, args.frames, data_aug=(not args.no_random))
 	test = Hollywood(args.test_data, mean, args.frames, data_aug=False)
 	
-	model = Mullabel_Classifier(archs[args.arch](Hollywood.NUM_OF_CLASSES))
-	
+	# model = Mullabel_Classifier(archs[args.arch](Hollywood.NUM_OF_CLASSES))
+	model = L.Classifier(archs[args.arch](Hollywood.NUM_OF_CLASSES))
 	if args.gpu >= 0:
 		# Make a specified GPU current
 		chainer.cuda.get_device_from_id(args.gpu).use()

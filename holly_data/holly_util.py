@@ -65,7 +65,8 @@ class Holly_util():
 			
 	def get_data_dic(self):
 		return self._data_dic
-	
+
+
 # with open('actions_autotrain.csv', 'w', newline='') as csvfile:
 # 	writer = csv.writer(csvfile, delimiter=',')
 # 	writer.writerow(['file_name'] + action_names)

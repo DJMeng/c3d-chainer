@@ -7,7 +7,7 @@ class Mullabel_Classifier(L.Classifier):
 	
 	@staticmethod
 	def sigmoid_cross_entropy_mullabel(x, t):
-		return F.sigmoid_cross_entropy(x, t)
+		return F.softmax_cross_entropy(x,t) #F.sigmoid_cross_entropy(x, t)
 		
 	@staticmethod
 	def accuracy_mullable(x, t):
